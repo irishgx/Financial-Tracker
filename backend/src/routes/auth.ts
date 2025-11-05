@@ -162,6 +162,8 @@ router.post('/register', authLimiter, async (req, res) => {
     });
   } catch (error: any) {
     console.error('Registration error:', error);
+    console.error('Error stack:', error.stack);
+    console.error('Error details:', JSON.stringify(error, null, 2));
     logSecurityEvent(req, 'suspicious_activity', { error: 'Registration failed', details: error });
     
     // Provide more specific error messages
@@ -174,7 +176,8 @@ router.post('/register', authLimiter, async (req, res) => {
     
     res.status(500).json({ 
       error: errorMessage,
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: process.env.NODE_ENV === 'development' ? (error.message || String(error)) : undefined,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 });
