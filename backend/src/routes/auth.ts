@@ -129,17 +129,26 @@ router.post('/register', authLimiter, async (req, res) => {
       updatedAt: now
     });
 
-    // Send verification email
-    const emailSent = await emailService.sendVerificationEmail(
-      user.email,
-      verificationToken,
-      user.firstName
-    );
+    // Send verification email (non-blocking - don't fail registration if email fails)
+    let emailSent = false;
+    try {
+      emailSent = await emailService.sendVerificationEmail(
+        user.email,
+        verificationToken,
+        user.firstName
+      );
+    } catch (emailError) {
+      console.error('Failed to send verification email (registration continues):', emailError);
+      // Don't fail registration if email sending fails
+      emailSent = false;
+    }
 
     logSecurityEvent(req, 'login_success', { userId: user.id, email: user.email });
 
     res.status(201).json({
-      message: 'User created successfully. Please check your email to verify your account.',
+      message: emailSent 
+        ? 'User created successfully. Please check your email to verify your account.'
+        : 'User created successfully. Please verify your email address to complete registration.',
       user: {
         id: user.id,
         email: user.email,
@@ -151,10 +160,22 @@ router.post('/register', authLimiter, async (req, res) => {
       emailSent,
       requiresVerification: true
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration error:', error);
     logSecurityEvent(req, 'suspicious_activity', { error: 'Registration failed', details: error });
-    res.status(500).json({ error: 'Registration failed' });
+    
+    // Provide more specific error messages
+    let errorMessage = 'Registration failed';
+    if (error.message) {
+      errorMessage = error.message;
+    } else if (error.code === 'EACCES' || error.code === 'ENOENT') {
+      errorMessage = 'Database error. Please contact support.';
+    }
+    
+    res.status(500).json({ 
+      error: errorMessage,
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

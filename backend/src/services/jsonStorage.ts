@@ -2,7 +2,10 @@ import fs from 'fs/promises'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
-const DATA_DIR = path.join(process.cwd(), 'data')
+// Use /tmp for serverless environments (Vercel), otherwise use ./data
+const DATA_DIR = process.env.VERCEL 
+  ? path.join('/tmp', 'financial-tracker-data')
+  : path.join(process.cwd(), process.env.DATA_DIR || 'data')
 
 // Ensure data directory exists
 async function ensureDataDir() {
