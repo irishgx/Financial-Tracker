@@ -152,8 +152,15 @@ export function RegisterPage() {
       return
     }
 
-    if (formData.password.length < 6) {
-      toast.error('Password must be at least 6 characters')
+    // Validate password matches backend requirements
+    if (formData.password.length < 8) {
+      toast.error('Password must be at least 8 characters long')
+      return
+    }
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
+    if (!passwordRegex.test(formData.password)) {
+      toast.error('Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)')
       return
     }
 
