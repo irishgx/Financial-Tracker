@@ -1,0 +1,170 @@
+/* Enhanced Autofill Styling - Best Practices */
+
+/* Animation to detect autofill start (used by JavaScript) */
+@keyframes onAutoFillStart {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Override browser default autofill styles safely */
+/* Using high specificity and !important only where necessary */
+input.floating-input:-webkit-autofill,
+input.floating-input:-webkit-autofill:hover,
+input.floating-input:-webkit-autofill:focus,
+input.floating-input:-webkit-autofill:active {
+  /* Use a very long transition to prevent background color changes */
+  /* This is a common technique to maintain control over autofill styling */
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.8) inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  transition: background-color 5000s ease-in-out 0s, 
+              -webkit-box-shadow 5000s ease-in-out 0s;
+  animation: onAutoFillStart 0.0001s;
+  /* Ensure background matches our design */
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  /* Keep text color visible and accessible */
+  color: #1f2937 !important;
+}
+
+/* Login page autofill styling with better contrast */
+.login-page input.floating-input:-webkit-autofill,
+.login-page input.floating-input:-webkit-autofill:hover,
+.login-page input.floating-input:-webkit-autofill:focus,
+.login-page input.floating-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.8) inset !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  color: #1f2937 !important;
+}
+
+/* Register page autofill styling */
+.register-page input.floating-input:-webkit-autofill,
+.register-page input.floating-input:-webkit-autofill:hover,
+.register-page input.floating-input:-webkit-autofill:focus,
+.register-page input.floating-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.8) inset !important;
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  color: #1f2937 !important;
+}
+
+/* Enhanced focus states for autofilled inputs */
+input.floating-input:-webkit-autofill:focus,
+input.floating-input:-webkit-autofill.focused {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.9) inset,
+                      0 0 0 3px rgba(59, 130, 246, 0.1),
+                      0 0 0 1px rgba(59, 130, 246, 0.5) !important;
+  border-color: #3b82f6 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.register-page input.floating-input:-webkit-autofill:focus,
+.register-page input.floating-input:-webkit-autofill.focused {
+  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.9) inset,
+                      0 0 0 3px rgba(99, 102, 241, 0.1),
+                      0 0 0 1px rgba(99, 102, 241, 0.5) !important;
+  border-color: #6366f1 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Ensure labels stay in correct position when autofilled */
+/* This is critical - autofilled inputs should show labels as floating */
+input.floating-input:-webkit-autofill ~ .floating-label,
+input.floating-input.filled ~ .floating-label {
+  top: 0.5rem !important;
+  transform: translateY(0) scale(0.75) !important;
+  font-size: 0.75rem !important;
+  color: #2563eb !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  padding: 0 0.25rem !important;
+  border-radius: 0.25rem !important;
+}
+
+.register-page input.floating-input:-webkit-autofill ~ .floating-label {
+  color: #6366f1 !important;
+}
+
+/* Better contrast for autofilled text - ensure WCAG AA compliance */
+input.floating-input:-webkit-autofill {
+  font-weight: 500 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  color: #1f2937 !important;
+}
+
+/* Ensure autofilled inputs get the filled class visually */
+/* The JS will handle this, but CSS can help with immediate detection */
+input.floating-input:-webkit-autofill {
+  /* Trigger animation for JS detection */
+  animation-name: onAutoFillStart;
+}
+
+/* Firefox autofill support (though limited) */
+input.floating-input:-moz-autofill {
+  box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.8) inset;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #1f2937;
+}
+
+/* Password manager integration improvements */
+input.floating-input[type="password"] {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Prevent font substitution that might affect autofill detection */
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+/* Mobile browser autofill adjustments */
+@media (max-width: 640px) {
+  input.floating-input:-webkit-autofill ~ .floating-label {
+    font-size: 0.6875rem !important;
+    top: 0.375rem !important;
+  }
+}
+
+/* High contrast mode autofill support */
+@media (prefers-contrast: high) {
+  input.floating-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+    -webkit-text-fill-color: #000000 !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+  }
+  
+  input.floating-input:-webkit-autofill ~ .floating-label {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    background: #ffffff !important;
+  }
+}
+
+/* Reduced motion support for autofill */
+@media (prefers-reduced-motion: reduce) {
+  input.floating-input:-webkit-autofill,
+  input.floating-input:-webkit-autofill:hover,
+  input.floating-input:-webkit-autofill:focus,
+  input.floating-input:-webkit-autofill:active {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Dark mode autofill support */
+@media (prefers-color-scheme: dark) {
+  input.floating-input:-webkit-autofill,
+  input.floating-input:-webkit-autofill:hover,
+  input.floating-input:-webkit-autofill:focus,
+  input.floating-input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgba(17, 24, 39, 0.9) inset !important;
+    background-color: rgba(17, 24, 39, 0.9) !important;
+    -webkit-text-fill-color: #f9fafb !important;
+    color: #f9fafb !important;
+  }
+  
+  input.floating-input:-webkit-autofill ~ .floating-label {
+    background: rgba(17, 24, 39, 0.95) !important;
+    color: #3b82f6 !important;
+  }
+}

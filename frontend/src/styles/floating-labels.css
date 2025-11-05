@@ -1,0 +1,221 @@
+/* Enhanced Floating Labels - Best Practices Implementation */
+
+/* Base floating label wrapper */
+.floating-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Floating input base styles */
+.floating-input {
+  width: 100%;
+  padding: 1.5rem 1rem 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  font-size: 1rem;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Reduced motion support - disable transitions when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .floating-input,
+  .floating-label {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* Default state - label inside input */
+.floating-label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: top 0.2s ease, transform 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transform-origin: left center;
+  background: transparent;
+  padding: 0;
+  max-width: calc(100% - 2rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Floating state - label above input */
+/* Triggers on: focus, has value, placeholder-shown is false, or .filled class */
+.floating-input:focus ~ .floating-label,
+.floating-input.focused ~ .floating-label,
+.floating-input:not(:placeholder-shown) ~ .floating-label,
+.floating-input.filled ~ .floating-label,
+.floating-input:-webkit-autofill ~ .floating-label {
+  top: 0.5rem;
+  transform: translateY(0) scale(0.75);
+  font-size: 0.75rem;
+  color: #2563eb;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+}
+
+/* Focus state enhancements */
+.floating-input:focus,
+.floating-input.focused {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 0 0 1px rgba(59, 130, 246, 0.5);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Hover state */
+.floating-input:hover:not(:focus):not(.focused) {
+  border-color: #9ca3af;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* Error state */
+.floating-input-wrapper.error .floating-input {
+  border-color: #ef4444;
+}
+
+.floating-input-wrapper.error .floating-input:focus,
+.floating-input-wrapper.error .floating-input.focused {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1), 0 0 0 1px rgba(239, 68, 68, 0.5);
+}
+
+.floating-input-wrapper.error .floating-label {
+  color: #ef4444;
+}
+
+/* Success state */
+.floating-input-wrapper.success .floating-input {
+  border-color: #10b981;
+}
+
+.floating-input-wrapper.success .floating-input:focus,
+.floating-input-wrapper.success .floating-input.focused {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1), 0 0 0 1px rgba(16, 185, 129, 0.5);
+}
+
+.floating-input-wrapper.success .floating-label {
+  color: #10b981;
+}
+
+/* Disabled state */
+.floating-input:disabled {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.floating-input:disabled ~ .floating-label {
+  color: #9ca3af;
+}
+
+/* Ensure placeholder is invisible but still functional for :not(:placeholder-shown) */
+.floating-input::placeholder {
+  opacity: 0;
+  color: transparent;
+}
+
+/* Accessibility improvements */
+.floating-input:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .floating-input {
+    border-width: 2px;
+  }
+  
+  .floating-input:focus,
+  .floating-input.focused {
+    border-color: #000;
+    box-shadow: 0 0 0 3px #000;
+  }
+  
+  .floating-label {
+    font-weight: 600;
+  }
+  
+  .floating-input:focus ~ .floating-label,
+  .floating-input.filled ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    font-weight: 700;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .floating-input {
+    padding: 1.25rem 0.875rem 0.375rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  
+  .floating-label {
+    font-size: 0.875rem;
+    left: 0.875rem;
+  }
+  
+  .floating-input:focus ~ .floating-label,
+  .floating-input.filled ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    font-size: 0.6875rem;
+    top: 0.375rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .floating-input {
+    background: rgba(17, 24, 39, 0.5);
+    border-color: #374151;
+    color: #f9fafb;
+  }
+  
+  .floating-input:focus,
+  .floating-input.focused {
+    background: rgba(17, 24, 39, 0.8);
+    border-color: #3b82f6;
+  }
+  
+  .floating-label {
+    color: #9ca3af;
+  }
+  
+  .floating-input:focus ~ .floating-label,
+  .floating-input.filled ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    background: rgba(17, 24, 39, 0.95);
+    color: #3b82f6;
+  }
+}
+
+/* Login page specific styles */
+.login-page .floating-input:focus ~ .floating-label,
+.login-page .floating-input.filled ~ .floating-label,
+.login-page .floating-input:not(:placeholder-shown) ~ .floating-label {
+  color: #2563eb;
+}
+
+/* Register page specific styles */
+.register-page .floating-input:focus ~ .floating-label,
+.register-page .floating-input.filled ~ .floating-label,
+.register-page .floating-input:not(:placeholder-shown) ~ .floating-label {
+  color: #6366f1;
+}
+
+.register-page .floating-input:focus,
+.register-page .floating-input.focused {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1), 0 0 0 1px rgba(99, 102, 241, 0.5);
+}
