@@ -2,7 +2,7 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install --force",
+  "installCommand": "cd frontend && npm install && cd ../backend && npm install",
   "framework": null,
   "rewrites": [
     {
