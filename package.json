@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@vercel/node": "^5.5.4",
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "rollup": "^4.52.5"
   }
 }
