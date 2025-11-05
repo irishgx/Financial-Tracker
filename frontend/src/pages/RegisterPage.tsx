@@ -420,9 +420,10 @@ export function RegisterPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 text-gray-400 hover:text-gray-600 transition-colors z-10 flex items-center justify-center"
                     style={{ 
-                      top: '27px',
-                      transform: 'translateY(-50%)'
-                    }}
+                      top: '27px !important',
+                      transform: 'translateY(-50%)',
+                      position: 'absolute'
+                    } as React.CSSProperties}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
